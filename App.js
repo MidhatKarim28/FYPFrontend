@@ -29,16 +29,10 @@ import Select from './screens/ClientScreens/Select';
 import BookingDetails from './screens/ClientScreens/BookingDetails';
 import ServiceDetails from './screens/ClientScreens/ServiceDetails';
 import ProviderDetails from './screens/ClientScreens/ProviderDetails';
-import axios from 'axios';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeTabs() {
-
-
- 
-  
-
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -121,8 +115,8 @@ function HomeTabs() {
         }}
       />
       <Tab.Screen
-        name="Bookings"
-        component={Bookings}
+        name="Profile"
+        component={Profile}
         options={{
           tabBarLabel: "Request",
           tabBarIcon: ({ focused, size }) => (

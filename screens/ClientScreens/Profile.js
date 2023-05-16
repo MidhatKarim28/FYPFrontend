@@ -6,6 +6,7 @@ const ProfileScreen = ({ navigation })=> {
   const name = 'Midhat Karim';
   const mobile = '03232174357';
   const email = 'midhat@gmail.com';
+  const cnic='42201-9449610-6'
   const  profileImageUrl  = require("../../assets/undraw_Profile_pic_re_iwgo.png");
 //  const { userType } = route.params;
 
@@ -24,6 +25,8 @@ const ProfileScreen = ({ navigation })=> {
           <Text style={{fontSize: 15,marginBottom: 20,}}>{mobile}</Text>
           <Text style={styles.email}>Email</Text>
           <Text style={{fontSize: 15,marginBottom: 20,}}>{email}</Text>
+          <Text style={styles.cnic}>Cnic</Text>
+          <Text style={{fontSize: 15,marginBottom: 20,}}>{cnic}</Text>
         </View>
       <View style={styles.profilePicContainer}>
         <Image style={styles.profileImage} source={profileImageUrl} /></View>
@@ -93,6 +96,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   email: {
+    fontSize: 16,
+    marginBottom: 2,
+    fontWeight: 'bold',
+  },
+  cnic: {
     fontSize: 16,
     marginBottom: 2,
     fontWeight: 'bold',
