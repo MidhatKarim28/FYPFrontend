@@ -8,8 +8,10 @@ import {StyleSheet,TouchableOpacity,Dimensions,View} from 'react-native';
 import HomeProvider from "./screens/ProviderScreens/HomeProvider";
 import Start from './screens/Start';
 import Mode from "./screens/Mode";
-import Signup from "./screens/Signup";
-import Welcome from "./screens/Welcome";
+import PSignup from "./screens/ProviderScreens/PSignup";
+import CSignup from "./screens/ClientScreens/CSignup";
+import PWelcome from "./screens/ProviderScreens/PWelcome";
+import CWelcome from "./screens/ClientScreens/CWelcome";
 import OTP from "./screens/Otp";
 import Register from "./screens/Create";
 import Services from "./screens/Services";
@@ -106,12 +108,6 @@ function HomeTabs() {
   })}
 />
 
-
-
-
-
-
-
       <Tab.Screen
         name="OnWay"
         component={OnWay}
@@ -126,7 +122,7 @@ function HomeTabs() {
     <Stack.Screen
   name="ProviderProfile"
   component={ProviderProfile}
-  initialParams={{ userType: 'provider', phoneNumber }} // Pass the userType and phoneNumber parameters here
+  initialParams={{ userType: 'provider', phoneNumber,cnic }} // Pass the userType and phoneNumber parameters here
   options={({ route }) => ({
     tabBarLabel: "Request",
     tabBarIcon: ({ focused, size }) => (
@@ -141,7 +137,11 @@ function HomeTabs() {
    </Tab.Navigator>
   );
 }
+
+
 function ClientTabs() {
+  const route = useRoute();
+  const { cnic, phoneNumber } = route.params;
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -191,16 +191,18 @@ function ClientTabs() {
 
         }}
       />
-      <Tab.Screen
+      <Stack.Screen
   name="Profile"
-  component={Profile} // Use the updated ProfileScreen component
-  initialParams={{ userType: 'seeker' }} // Pass the userType parameter here
-  options={{
+  component={Profile}
+  initialParams={{ userType: 'seeker', phoneNumber,cnic }} // Pass the userType and phoneNumber parameters here
+  options={({ route }) => ({
     tabBarLabel: "Request",
     tabBarIcon: ({ focused, size }) => (
       <Ionicons name="person" size={24} color={focused ? "#5f60ba" : "#8d8e93"} />
     ),
-  }}
+    // Pass the cnic parameter as a function that retrieves it from the route params
+    headerTitle: () => <Text>{route.params?.cnic}</Text>,
+  })}
 />
 
    </Tab.Navigator>
@@ -216,9 +218,11 @@ export default function App() {
         <Stack.Screen name="HomeTabs" component={HomeTabs} />
         <Stack.Screen name="ClientTabs" component={ClientTabs}/>
         <Stack.Screen name="Mode" component={Mode} />
-        <Stack.Screen name='Signup' component={Signup}/>
+        <Stack.Screen name='PSignup' component={PSignup}/>
+        <Stack.Screen name='CSignup' component={CSignup}/>
         <Stack.Screen name='OTP' component={OTP}/>
-        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="PWelcome" component={PWelcome} />
+        <Stack.Screen name="CWelcome" component={CWelcome} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Map" component={Map} />
         <Stack.Screen name="HomeProvider" component={HomeProvider} />

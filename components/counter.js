@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 
-const Counter = ({initialCount}) => {
+const Counter = ({ initialCount, onCountChange }) => {
   const [count, setCount] = useState(initialCount);
+
   const decrement = () => {
-    setCount(count => count - initialCount);
+    const newCount = count - 1;
+    setCount(newCount);
+    onCountChange(newCount);
   };
 
   const increment = () => {
-    setCount(count => count + initialCount);
-
+    const newCount = count + 1;
+    setCount(newCount);
+    onCountChange(newCount);
   };
 
   return (

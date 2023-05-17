@@ -26,7 +26,7 @@ const Signup = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => {
             setUserType("provider");
-            navigation.navigate("Signup", { userType: "provider" });
+            navigation.navigate("PSignup", { userType: "provider" });
           }}
         >
           <View style={styles.button}>
@@ -37,7 +37,7 @@ const Signup = ({ navigation }) => {
         <TouchableOpacity
           onPress={() => {
             setUserType("seeker");
-            navigation.navigate("Signup", { userType: "seeker" });
+            navigation.navigate("CSignup", { userType: "seeker" });
           }}
         >
           <View style={[styles.button, styles.buttonSeeker]}>

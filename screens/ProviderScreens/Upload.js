@@ -2,14 +2,32 @@ import Counter from '../../components/counter';
 import { Dimensions, StyleSheet, View,Text, TextInput, TouchableOpacity,Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const Create = ({ navigation,route }) => {
   const { height } = Dimensions.get("window");
   const windowHeight = height + height * 0.05;
-  const { categoryName, service } = route.params;
-  const userType="provider";
+  const { categoryName, service, test, selectedLocation, selectedAddress } = route.params;
 
+
+  const userType="provider";
+console.log(test);
+  
+  // if(!categoryName)
+  // {
+  //   categoryName= AsyncStorage.getItem("category");
+  // }
+  // else{
+  //   AsyncStorage.setItem("category", categoryName);
+  // }
+  // if(!service)
+  // {
+  //   service= AsyncStorage.getItem("service");
+  // }
+  // else{
+  //   AsyncStorage.setItem("service", service);
+  // }
   return (
    
     <View style={styles.container}>
@@ -55,12 +73,15 @@ const Create = ({ navigation,route }) => {
           >         Location   
           </Text>
 
-      <View  style={styles.textInput}>
-    <TouchableOpacity onPress={() => navigation.navigate("Map",{userType})}>
-    <Text style={{marginTop: 10, 
-    color: "black",opacity:0.6}}>Street, Area</Text>
-    </TouchableOpacity>
+          <View style={styles.textInput}>
+  <TouchableOpacity onPress={() => navigation.navigate("Map", { userType, categoryName, service })}>
+    <Text style={{ marginTop: 0, color: "black", opacity: 0.6 }}>{selectedLocation ? selectedLocation.description : "Street"}</Text>
+    {selectedAddress && (
+      <Text style={{ marginTop: 0, color: "black", opacity: 0.6 }}>{selectedAddress}</Text>
+    )}
+  </TouchableOpacity>
 </View>
+
 <Text
             style={[styles.textLabel,{marginBottom:28}]}
           >
@@ -69,7 +90,7 @@ const Create = ({ navigation,route }) => {
          
         <Counter initialCount={100}/>  
           
-        <TouchableOpacity onPress={() => navigation.navigate("Summary", { categoryName, service })}>
+        <TouchableOpacity onPress={() => navigation.navigate("Summary", { categoryName, service, selectedLocation,selectedAddress })}>
           <View style={styles.button}>
             <Text style={styles.buttonText}>View Summary</Text>
           </View>

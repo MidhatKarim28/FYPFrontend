@@ -17,7 +17,7 @@ const Signup = ({ navigation, route }) => {
     <View style={styles.container}>
       <View style={styles.greyBox} />
       <Image
-        source={require("../assets/singup.png")}
+        source={require("../../assets/singup.png")}
         style={{
           width: imageWidth,
           height: imageHeight,
@@ -26,7 +26,7 @@ const Signup = ({ navigation, route }) => {
         }}
       />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Welcome', { userType })}>
+        <TouchableOpacity onPress={() => navigation.navigate('PWelcome', { userType })}>
           <View style={[styles.button, { width: buttonWidth }]}>
             <Text style={styles.buttonText}>Sign In</Text>
           </View>

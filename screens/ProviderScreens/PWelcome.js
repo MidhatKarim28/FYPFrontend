@@ -12,7 +12,7 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 
-const Welcome = ({ navigation, route }) => {
+const PWelcome = ({ navigation, route }) => {
   const { width, height } = Dimensions.get("window");
   const { userType } = route.params;
   const backButtonMarginTop = height <= 604 ? -height * 0.90 : -height * 0.80;
@@ -48,7 +48,7 @@ const Welcome = ({ navigation, route }) => {
         const { cnic } = response.data;
         // If a provider with the given CNIC exists, proceed with sending OTP
         // Make the API call to send the OTP
-        /*axios
+        axios
           .post("http://192.168.18.122:8000/provider/login", {
             phone_number: phoneNumber,
             channel: "call", // or 'call' based on your API requirements
@@ -57,15 +57,12 @@ const Welcome = ({ navigation, route }) => {
             // Handle the response from the API
             if (response.data.status === "success") {
               // OTP sent successfully, navigate to OTP screen with the CNIC
-              // navigation.navigate("OTP", {
-              //   userType,
-              //   phoneNumber,
-              //   cnic,
-              // });
-              navigation.navigate(userType === "provider" ? "HomeTabs" : "ClientTabs", {
+              navigation.navigate("OTP", {
+                userType,
                 phoneNumber,
                 cnic,
               });
+              
             } else {
               // Error sending OTP, show an error message
               console.log(response.data.message);
@@ -74,13 +71,9 @@ const Welcome = ({ navigation, route }) => {
           .catch((error) => {
             // Handle the error if the API call fails
             console.log(error);
-          });*/
+          });
         
-        // Navigate to HomeTabs directly
-        navigation.navigate(userType === "provider" ? "HomeTabs" : "ClientTabs", {
-          phoneNumber,
-          cnic,
-        });
+        
       })
       .catch((error) => {
         // Handle the error if the CNIC does not exist in the database
@@ -91,7 +84,7 @@ const Welcome = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Image
-        source={require("../assets/undraw_text_field_htlv.png")}
+        source={require("../../assets/undraw_text_field_htlv.png")}
         style={[
           styles.image,
           { width: width * 0.99, height: width * 0.9 * 0.8 },
@@ -105,7 +98,7 @@ const Welcome = ({ navigation, route }) => {
           ]}
         >
           <Text style={[styles.welcomeText, { fontSize: height * 0.044 }]}>
-            Welcome Back!
+            Welcome Back P!
           </Text>
           <Text style={[styles.descriptionText]}>
             Enter your registered Mobile Number and CNIC to receive OTP.
@@ -241,4 +234,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Welcome;
+export default PWelcome;

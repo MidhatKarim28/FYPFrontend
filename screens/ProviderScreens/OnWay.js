@@ -1,16 +1,16 @@
-
 import { View, Text,ImageBackground,Image, StyleSheet,TouchableOpacity,Dimensions,ScrollView } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
-const ProfileScreen =  ({ navigation }) => {
+const ProfileScreen =  ({ navigation,route }) => {
   const [isPressed, setIsPressed] = useState(false);
   const [isPressed1, setIsPressed1] = useState(false);
   const [isPressed2, setIsPressed2] = useState(false);
   const [isPressed3, setIsPressed3] = useState(false);
   const profilePic = require("../../assets/undraw_Profile_pic_re_iwgo.png"); 
   const backgroundImage=require("../../assets/bg2.jpg");
+  const {cnic} = route.params;
   
   const handlePress1 = () => {
     setIsPressed1((prevState) => !prevState);
@@ -184,7 +184,8 @@ const ProfileScreen =  ({ navigation }) => {
   </View>
 </View>
 </TouchableOpacity>
-      <TouchableOpacity onPress={()=> navigation.goBack()}>
+<TouchableOpacity onPress={() => navigation.navigate("HomeTabs", { cnic })}>
+
       <View
       style={{ 
         height: 50,
@@ -195,9 +196,10 @@ const ProfileScreen =  ({ navigation }) => {
         marginTop:-730,
       }}
     >       
-      <AntDesign name="arrowleft" size={40} color="black" />
+      <AntDesign name="home" size={35} color="#5f60ba" />
       </View>
       </TouchableOpacity>
+     
       {/* < </ImageBackground> */}
       </ScrollView>
       </View>
@@ -266,7 +268,7 @@ name: {
     opacity: 0.7,
     borderRadius:20
   },
-  
+ 
 });
 
 export default ProfileScreen;

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import ProviderProfile from "./ProviderProfile";
 import { FontAwesome5 } from '@expo/vector-icons';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
   const HomeProvider = ({ navigation,route }) => {
     const { height, width } = Dimensions.get("window");
@@ -41,13 +41,14 @@ import { FontAwesome5 } from '@expo/vector-icons';
   
     const CategoryBox = ({ category, icon, categoryId }) => (
       <TouchableOpacity
-        onPress={() =>
+        onPress={() => {AsyncStorage.setItem("category",JSON.stringify(category))
+        console.log(category,"rutba");
           navigation.navigate("Services", {
             userType,
             categoryName: category,
             categoryId, // Pass the categoryId directly
           })
-        }
+        }}
       >
   <View style={[styles.categoryBox, { backgroundColor: "#f6f7f9", width: width * 0.4 }]}>
       <FontAwesome5 name={icon} size={width * 0.1} color="#777e86" />

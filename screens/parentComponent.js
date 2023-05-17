@@ -1,6 +1,6 @@
 // ParentComponent.js
 import React, { useState } from "react";
-import Welcome from "./Welcome";
+import PWelcome from "./Welcome";
 import App from "../App";
 import HomeProvider from "./ProviderScreens/HomeProvider";
 
@@ -9,7 +9,7 @@ const ParentComponent = () => {
 
   return (
     <>
-      <Welcome setPhoneNumber={setPhoneNumber} />
+      <PWelcome setPhoneNumber={setPhoneNumber} />
       <App phoneNumber={phoneNumber} />
       <HomeProvider phoneNumber={phoneNumber} />
 

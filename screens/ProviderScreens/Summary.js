@@ -8,7 +8,7 @@ const ProfileScreen = ({ navigation ,route}) => {
   const backgroundImage=require("../../assets/undraw_Receipt_re_fre3.png");
 
   const backButtonMarginTop = height <= 604 ?-height*0.97:-height*0.83;
-  const { categoryName, service } = route.params;
+  const { categoryName, service,cnic, selectedLocation,selectedAddress } = route.params;
 
   return (
     <View style={styles.container}>
@@ -36,13 +36,13 @@ const ProfileScreen = ({ navigation ,route}) => {
               <Text style={styles.detailTitle}>{service}</Text>
             </View>
             <View style={styles.detailItem}>
-              <Text style={styles.detailTitle}>Location</Text>
+              <Text style={styles.detailTitle}>{selectedAddress}</Text>
             </View>
             <View style={styles.detailItem}>
-              <Text style={styles.detailTitle}>Price per hour</Text>
+              <Text style={styles.detailTitle}>200</Text>
             </View>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate("OnWay")}>
+          <TouchableOpacity onPress={() => navigation.navigate("OnWay", { cnic })}>
             <View style={styles.button}>
               <Text style={styles.buttonText}>Upload Request</Text>
             </View>

@@ -2,43 +2,60 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const ProfileScreen = ({ navigation, route }) => {
-  const userType = route.params?.userType;
-  const cnic = route.params?.cnic;
+const Profile = ({ navigation, route }) => {
+  const { phoneNumber, cnic } = route.params;
   const [userDetails, setUserDetails] = useState(null);
   const profileImageUrl = require("../../assets/undraw_Profile_pic_re_iwgo.png");
 
-  
-  
 
-  const [categoryData, setCategoryData] = useState([]);
-  
-    useEffect(() => {
-      console.log('Component rendered');
-      const fetchCategoriesData = async () => {
-        try {
-          console.log('reached here');
-          const response = await axios.get('http://192.168.18.122:8000/provider');
-          console.log(response.data);
-          const data = response.data.map((category) => ({
-            id: category.id,
-            category: category.name,
-            icon: category.category_icon,
-          }));
-          data.forEach((category) => {
-            console.log(category.id); // Log the category ID here
-          });
-          setCategoryData(data);
-        } catch (error) {
-          console.log('Error:', error.message);
-          setCategoryData([]);
+//   const fetchCNICByPhoneNumber = async () => {
+//     try {
+//       const url = `http://192.168.18.122:8000/provider/check-cnic/${phoneNumber}`;
+//       const response = await fetch(url);
+//       console.log(phoneNumber);
+//       if (!response.ok) {
+//         throw new Error('Failed to fetch CNIC');
+//       }
+//       const data = await response.json();
+//       const cnic = data.cnic;
+//       // Fetch user details based on the retrieved CNIC
+//       fetchUserDetails(cnic);
+//     } catch (error) {
+//       console.error('Error fetching CNIC:', error);
+//     }
+//   };
+
+  const fetchUserDetails = async (cnic) => {
+
+    console.log(cnic);
+    try {
+      if (cnic) {
+        const url = `http://192.168.18.122:8000/client/${cnic}`;
+        console.log(url);
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error('Failed to fetch client details');
         }
-      };
-  
-      fetchCategoriesData();
-    }, []);
+        const data = await response.json();
+        if (!data) {
+          throw new Error('Empty response data');
+        }
+        setUserDetails(data);
+      } else {
+        setUserDetails(null);
+      }
+    } catch (error) {
+      console.error('Error fetching client details:', error);
+    }
+  };
+  useEffect(() => {
+    // Fetch the CNIC based on the phone number
+    fetchUserDetails(cnic);
+  }, []);
 
-  const { name, mobile, email } = userDetails;
+  
+  
+  const { name, phone, warning_count, status } = userDetails || {};
 
   return (
     <View style={styles.container}>
@@ -50,12 +67,11 @@ const ProfileScreen = ({ navigation, route }) => {
           <View style={styles.headerInfo}>
             <Text style={styles.name}>Name:</Text>
             <Text style={{ fontSize: 15, marginBottom: 20 }}>{name}</Text>
-            <Text style={styles.mobile}>Mobile:</Text>
-            <Text style={{ fontSize: 15, marginBottom: 20 }}>{mobile}</Text>
-            <Text style={styles.email}>Email</Text>
-            <Text style={{ fontSize: 15, marginBottom: 20 }}>{email}</Text>
-            <Text style={styles.cnic}>CNIC</Text>
+            <Text style={styles.phone}>Phone:</Text>
+            <Text style={{ fontSize: 15, marginBottom: 20 }}>{phone}</Text>
+            <Text style={styles.name}>CNIC:</Text>
             <Text style={{ fontSize: 15, marginBottom: 20 }}>{cnic}</Text>
+            
           </View>
           <View style={styles.profilePicContainer}>
             <Image style={styles.profileImage} source={profileImageUrl} />
@@ -73,10 +89,11 @@ const ProfileScreen = ({ navigation, route }) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Mode")}>
           <View style={{ marginTop: 40, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column' }}>
-            <AntDesign name="poweroff" size={24} color="black" marginBottom={10} />
-            <Text style={styles.name}>Logout</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Switch to Provider Mode</Text>
+            <AntDesign name="switcher" size={24} color="black" style={{ marginTop: 10 }} />
           </View>
         </TouchableOpacity>
+        <View style={{ marginBottom: 20 }} />
       </ScrollView>
     </View>
   );
@@ -85,56 +102,46 @@ const ProfileScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
+    paddingTop: 40,
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    marginTop: 10
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-    marginLeft: 20
-  },
-  profilePicContainer: {
-    width: 150,
-    height: 150,
-    borderRadius: 50,
-    overflow: 'hidden',
-    marginLeft: 40,
-    marginTop: 30
-  },
-  profileImage: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
+    marginBottom: 30,
   },
   headerInfo: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginTop: 10
+    flex: 1,
   },
   name: {
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 2,
+    marginBottom: 10,
   },
-  mobile: {
-    fontSize: 16,
-    marginBottom: 2,
+  phone: {
+    fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 10,
   },
-  email: {
-    fontSize: 16,
-    marginBottom: 2,
+  warningCount: {
+    fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 10,
   },
-  cnic: {
-    fontSize: 16,
-    marginBottom: 2,
+  status: {
+    fontSize: 18,
     fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  profilePicContainer: {
+    marginLeft: 20,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
 });
 
-export default ProfileScreen;
+export default Profile;

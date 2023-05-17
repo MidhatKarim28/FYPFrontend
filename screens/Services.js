@@ -4,6 +4,7 @@ import { Dimensions, StyleSheet, View, Text, TextInput, TouchableOpacity,ScrollV
 import React, { useEffect, useState } from 'react';
 import { FontAwesome5 } from '@expo/vector-icons';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // Define the fetchCategories function
@@ -48,7 +49,8 @@ const Home = ({ navigation, route }) => {
  
  
   const CategoryBox = ({ service, icon, categoryId }) => (
-    <TouchableOpacity onPress={() => navigation.navigate(userType === 'provider' ? 'Upload' : 'ServiceDetails', { categoryName, service })}>
+    <TouchableOpacity onPress={() => {AsyncStorage.setItem("service",service);
+     navigation.navigate(userType === 'provider' ? 'Upload' : 'ServiceDetails', { categoryName, service })}}>
       <View style={[styles.categoryBox, { backgroundColor: '#f6f7f9' }]}>
         <FontAwesome5 name={icon} size={30} color="#777e86" />
         <View style={{ backgroundColor: "white", height: 1 }} />

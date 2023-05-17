@@ -7,10 +7,6 @@ const ProviderProfile = ({ navigation, route }) => {
   const [userDetails, setUserDetails] = useState(null);
   const profileImageUrl = require("../../assets/undraw_Profile_pic_re_iwgo.png");
 
-  useEffect(() => {
-    // Fetch the CNIC based on the phone number
-    fetchUserDetails();
-  }, [cnic]);
 
 //   const fetchCNICByPhoneNumber = async () => {
 //     try {
@@ -30,9 +26,12 @@ const ProviderProfile = ({ navigation, route }) => {
 //   };
 
   const fetchUserDetails = async (cnic) => {
+
+    console.log(cnic);
     try {
       if (cnic) {
         const url = `http://192.168.18.122:8000/provider/${cnic}`;
+        console.log(url);
         const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Failed to fetch user details');
@@ -49,7 +48,11 @@ const ProviderProfile = ({ navigation, route }) => {
       console.error('Error fetching user details:', error);
     }
   };
-  
+  useEffect(() => {
+    // Fetch the CNIC based on the phone number
+    fetchUserDetails(cnic);
+  }, []);
+
   
   
   const { name, phone, warning_count, status } = userDetails || {};
@@ -66,6 +69,8 @@ const ProviderProfile = ({ navigation, route }) => {
             <Text style={{ fontSize: 15, marginBottom: 20 }}>{name}</Text>
             <Text style={styles.phone}>Phone:</Text>
             <Text style={{ fontSize: 15, marginBottom: 20 }}>{phone}</Text>
+            <Text style={styles.name}>CNIC:</Text>
+            <Text style={{ fontSize: 15, marginBottom: 20 }}>{cnic}</Text>
             <Text style={styles.warningCount}>Warning Count:</Text>
             <Text style={{ fontSize: 15, marginBottom: 20 }}>{warning_count}</Text>
             <Text style={styles.status}>Status:</Text>
@@ -76,7 +81,7 @@ const ProviderProfile = ({ navigation, route }) => {
           </View>
         </View>
         <View style={{ backgroundColor: "black", height: 1 }} />
-        <TouchableOpacity onPress={() => navigation.navigate("Bookings")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Bookings", { cnic, phoneNumber })}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 20, marginLeft: 20 }}>History</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
