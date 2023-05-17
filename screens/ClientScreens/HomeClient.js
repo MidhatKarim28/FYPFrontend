@@ -72,16 +72,24 @@ const Home = ({ navigation }) => {
   ];
     
 
-  const CategoryBox = ({ category, icon }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Services', { userType, categoryName: category })}>
-    <View style={[styles.categoryBox, { backgroundColor: '#f6f7f9', width: width * 0.4 }]}>
-        <FontAwesome5 name={icon} size={width * 0.1} color="#777e86" />
-        <View style={{ backgroundColor: "white", height: 1 }} />
-        <Text style={{ marginTop: 10, marginLeft: 10, color: "black", fontSize: width * 0.04 }}>
-          {category}
-        </Text>
-      </View>
-    </TouchableOpacity>
+  const CategoryBox = ({ category, icon, categoryId }) => (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Services", {
+          userType,
+          categoryName: category,
+          categoryId, // Pass the categoryId directly
+        })
+      }
+    >
+<View style={[styles.categoryBox, { backgroundColor: "#f6f7f9", width: width * 0.4 }]}>
+    <FontAwesome5 name={icon} size={width * 0.1} color="#777e86" />
+    <View style={{ backgroundColor: "white", height: 1 }} />
+    <Text style={{ marginTop: 10, marginLeft: 10, color: "black", fontSize: width * 0.04 }}>
+      {category}
+    </Text>
+  </View>      
+  </TouchableOpacity>
   );
 
   const CategoryList = ({ categoryData }) => {
@@ -96,7 +104,7 @@ const Home = ({ navigation }) => {
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: width * 0.05 }}>
           {categoryData.map(category => (
             <CategoryBox
-              key={category.id}
+              categoryId={category.id}
               category={category.category}
               icon={category.icon}
             />

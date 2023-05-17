@@ -2,7 +2,7 @@ import { Feather } from '@expo/vector-icons';
 import { Dimensions, StyleSheet, View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import ProviderProfile from "./ProviderProfile";
 import { FontAwesome5 } from '@expo/vector-icons';
 
 
@@ -12,14 +12,13 @@ import { FontAwesome5 } from '@expo/vector-icons';
     const person = 'Midhat';
     const userType = "provider";
     //console.log(userType);
-  
     const [categoryData, setCategoryData] = useState([]);
   
     useEffect(() => {
       console.log('Component rendered');
       const fetchCategoriesData = async () => {
         try {
-          console.log('reached here')
+          console.log('reached here');
           const response = await axios.get('http://192.168.18.122:8000/category');
           console.log(response.data);
           const data = response.data.map((category) => ({
@@ -27,6 +26,9 @@ import { FontAwesome5 } from '@expo/vector-icons';
             category: category.name,
             icon: category.category_icon,
           }));
+          data.forEach((category) => {
+            console.log(category.id); // Log the category ID here
+          });
           setCategoryData(data);
         } catch (error) {
           console.log('Error:', error.message);
@@ -37,17 +39,27 @@ import { FontAwesome5 } from '@expo/vector-icons';
       fetchCategoriesData();
     }, []);
   
-  const CategoryBox = ({ category, icon }) => (
-    <TouchableOpacity onPress={() => navigation.navigate('Services', { userType, categoryName: category })}>
-    <View style={[styles.categoryBox, { backgroundColor: '#f6f7f9', width: width * 0.4 }]}>
-        <FontAwesome5 name={icon} size={width * 0.1} color="#777e86" />
-        <View style={{ backgroundColor: "white", height: 1 }} />
-        <Text style={{ marginTop: 10, marginLeft: 10, color: "black", fontSize: width * 0.04 }}>
-          {category}
-        </Text>
-      </View>
+    const CategoryBox = ({ category, icon, categoryId }) => (
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Services", {
+            userType,
+            categoryName: category,
+            categoryId, // Pass the categoryId directly
+          })
+        }
+      >
+  <View style={[styles.categoryBox, { backgroundColor: "#f6f7f9", width: width * 0.4 }]}>
+      <FontAwesome5 name={icon} size={width * 0.1} color="#777e86" />
+      <View style={{ backgroundColor: "white", height: 1 }} />
+      <Text style={{ marginTop: 10, marginLeft: 10, color: "black", fontSize: width * 0.04 }}>
+        {category}
+      </Text>
+    </View>      
     </TouchableOpacity>
-  );
+    );
+ 
+
 
   const CategoryList = ({ categoryData }) => {
     console.log(categoryData); // Add this line to log categoryData
@@ -57,7 +69,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: width * 0.05 }}>
           {categoryData.map(category => (
             <CategoryBox
-            key={category.id}
+            categoryId={category.id}
             category={category.category}
             icon={category.icon}
             />

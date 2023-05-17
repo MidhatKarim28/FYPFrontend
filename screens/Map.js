@@ -51,7 +51,7 @@ export default function App({ navigation,route }) {
 
   return (
     <View style={{ marginTop: 50, flex: 1 }}>
-      <TouchableOpacity onPress={() => navigation.navigate(userType === 'provider' ? 'Upload' : stage==1? 'HomeClient':'Select')}>
+      <TouchableOpacity onPress={() => navigation.navigate(userType === 'provider' ? 'Upload' : stage==1? 'HomeClient':'Select' , { cnic, phoneNumber })}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Submit</Text>
         </View>

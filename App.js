@@ -22,6 +22,7 @@ import Bookings from './screens/Bookings';
 import P_Maps from "./screens/ProviderScreens/P_Map";
 import HomeClient from "./screens/ClientScreens/HomeClient";
 import Profile from "./screens/ClientScreens/Profile";
+import ProviderProfile from "./screens/ProviderScreens/ProviderProfile";
 import Terms from "./screens/ClientScreens/Terms";
 import Privacy from "./screens/ClientScreens/Privacy";
 import Map from './screens/Map';
@@ -29,10 +30,18 @@ import Select from './screens/ClientScreens/Select';
 import BookingDetails from './screens/ClientScreens/BookingDetails';
 import ServiceDetails from './screens/ClientScreens/ServiceDetails';
 import ProviderDetails from './screens/ClientScreens/ProviderDetails';
+import ProfileScreen from "./screens/Bookings";
+import ProviderProfileScreen from "./screens/ProviderScreens/ProviderProfile";
+import { useRoute } from '@react-navigation/native';
+
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
+
 function HomeTabs() {
+  const route = useRoute();
+  const { cnic, phoneNumber } = route.params;
+  
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -114,16 +123,21 @@ function HomeTabs() {
 
         }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarLabel: "Request",
-          tabBarIcon: ({ focused, size }) => (
-            <Ionicons name="person" size={24} color={focused ? "#5f60ba" : "#8d8e93"} />
-          ),
-        }}
-      />
+    <Stack.Screen
+  name="ProviderProfile"
+  component={ProviderProfile}
+  initialParams={{ userType: 'provider', phoneNumber }} // Pass the userType and phoneNumber parameters here
+  options={({ route }) => ({
+    tabBarLabel: "Request",
+    tabBarIcon: ({ focused, size }) => (
+      <Ionicons name="person" size={24} color={focused ? "#5f60ba" : "#8d8e93"} />
+    ),
+    // Pass the cnic parameter as a function that retrieves it from the route params
+    headerTitle: () => <Text>{route.params?.cnic}</Text>,
+  })}
+/>
+
+
    </Tab.Navigator>
   );
 }
@@ -178,15 +192,17 @@ function ClientTabs() {
         }}
       />
       <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarLabel: "Request",
-          tabBarIcon: ({ focused, size }) => (
-            <Ionicons name="person" size={24} color={focused ? "#5f60ba" : "#8d8e93"} />
-          ),
-        }}
-      />
+  name="Profile"
+  component={Profile} // Use the updated ProfileScreen component
+  initialParams={{ userType: 'seeker' }} // Pass the userType parameter here
+  options={{
+    tabBarLabel: "Request",
+    tabBarIcon: ({ focused, size }) => (
+      <Ionicons name="person" size={24} color={focused ? "#5f60ba" : "#8d8e93"} />
+    ),
+  }}
+/>
+
    </Tab.Navigator>
   );
 }
