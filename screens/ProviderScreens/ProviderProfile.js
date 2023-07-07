@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const Profile = ({ navigation, route }) => {
+const ProviderProfile = ({ navigation, route }) => {
   const { phoneNumber, cnic } = route.params;
   const [userDetails, setUserDetails] = useState(null);
   const profileImageUrl = require("../../assets/undraw_Profile_pic_re_iwgo.png");
@@ -30,11 +30,11 @@ const Profile = ({ navigation, route }) => {
     console.log(cnic);
     try {
       if (cnic) {
-        const url = `http://192.168.18.122:8000/client/${cnic}`;
+        const url = `http://192.168.18.122:8000/provider/${cnic}`;
         console.log(url);
         const response = await fetch(url);
         if (!response.ok) {
-          throw new Error('Failed to fetch client details');
+          throw new Error('Failed to fetch user details');
         }
         const data = await response.json();
         if (!data) {
@@ -45,7 +45,7 @@ const Profile = ({ navigation, route }) => {
         setUserDetails(null);
       }
     } catch (error) {
-      console.error('Error fetching client details:', error);
+      console.error('Error fetching user details:', error);
     }
   };
   useEffect(() => {
@@ -71,14 +71,17 @@ const Profile = ({ navigation, route }) => {
             <Text style={{ fontSize: 15, marginBottom: 20 }}>{phone}</Text>
             <Text style={styles.name}>CNIC:</Text>
             <Text style={{ fontSize: 15, marginBottom: 20 }}>{cnic}</Text>
-            
+            <Text style={styles.warningCount}>Warning Count:</Text>
+            <Text style={{ fontSize: 15, marginBottom: 20 }}>{warning_count}</Text>
+            <Text style={styles.status}>Status:</Text>
+            <Text style={{ fontSize: 15, marginBottom: 20 }}>{status}</Text>
           </View>
           <View style={styles.profilePicContainer}>
             <Image style={styles.profileImage} source={profileImageUrl} />
           </View>
         </View>
         <View style={{ backgroundColor: "black", height: 1 }} />
-        <TouchableOpacity onPress={() => navigation.navigate("Bookings")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Bookings", { cnic, phoneNumber })}>
           <Text style={{ fontSize: 16, fontWeight: 'bold', marginTop: 20, marginLeft: 20 }}>History</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Terms")}>
@@ -89,7 +92,7 @@ const Profile = ({ navigation, route }) => {
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate("Mode")}>
           <View style={{ marginTop: 40, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'column' }}>
-            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Switch to Provider Mode</Text>
+            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Switch to Seeker Mode</Text>
             <AntDesign name="switcher" size={24} color="black" style={{ marginTop: 10 }} />
           </View>
         </TouchableOpacity>
@@ -144,4 +147,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Profile;
+export default ProviderProfile;
